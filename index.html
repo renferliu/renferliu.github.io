@@ -156,6 +156,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://renferliu.github.io/2020/05/30/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renfer">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renfer blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/30/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">线程池详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-30 00:06:53 / 修改时间：00:07:17" itemprop="dateCreated datePublished" datetime="2020-05-30T00:06:53+08:00">2020-05-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://renferliu.github.io/2020/05/29/AsyncTask%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renfer">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renfer blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/29/AsyncTask%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">AsyncTask源码分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-29 16:27:55" itemprop="dateCreated datePublished" datetime="2020-05-29T16:27:55+08:00">2020-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-01 16:02:41" itemprop="dateModified" datetime="2020-06-01T16:02:41+08:00">2020-06-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%89%E5%8D%93/" itemprop="url" rel="index"><span itemprop="name">安卓</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1><span id="asynctask源码分析">AsyncTask源码分析</span></h1><h2><span id="介绍">介绍</span></h2><p>AsyncTask可以在工作线程中执行耗时操作，并在UI线程中发布、展示结果。</p>
+<p>AsyncTask是围绕Thread和Handler设计的帮助类，通常适用于短操作（最多几秒钟），长时间操作并不适合。</p>
+<p>AsynTask有3个泛型参数，称为Params，Progress和Result；分别用来描述异步任务的输入类型，过程数据以及结果数据类型。执行分4个步骤，分别为：onPreExecute，doInBackground，onProgressUpdate和onPostExecute。</p>
+<h2><span id="参数分析">参数分析</span></h2><ul>
+<li>Params</li>
+</ul>
+<p>传入参数，在执行 execute(Params… params) 任务方法时传入的类型。</p>
+<ul>
+<li>Progress</li>
+</ul>
+<p>执行进度，在后台计算期间发布的进度单位类型。</p>
+<ul>
+<li>Result</li>
+</ul>
+<p>后台执行结果类型。</p>
+<h2><span id="代码分析">代码分析</span></h2><h3><span id="变量分析">变量分析</span></h3><p>先看具体的变量定义，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line">frameworks/base/core/java/android/os/AsyncTask.java  Android <span class="number">5.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncTask</span>&lt;<span class="title">Params</span>, <span class="title">Progress</span>, <span class="title">Result</span>&gt; </span>&#123;</span><br><span class="line">    .......</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String LOG_TAG = <span class="string">"AsyncTask"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CPU_COUNT = Runtime.getRuntime().availableProcessors();</span><br><span class="line">    <span class="comment">// We want at least 2 threads and at most 4 threads in the core pool,</span></span><br><span class="line">    <span class="comment">// preferring to have 1 less than the CPU count to avoid saturating</span></span><br><span class="line">    <span class="comment">// the CPU with background work</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = Math.max(<span class="number">2</span>, Math.min(CPU_COUNT - <span class="number">1</span>, <span class="number">4</span>));</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = CPU_COUNT * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE_SECONDS = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadFactory sThreadFactory = <span class="keyword">new</span> ThreadFactory() &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger mCount = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(Runnable r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Thread(r, <span class="string">"AsyncTask #"</span> + mCount.getAndIncrement());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">            <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">128</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * An &#123;<span class="doctag">@link</span> Executor&#125; that can be used to execute tasks in parallel.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor THREAD_POOL_EXECUTOR;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">                CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,</span><br><span class="line">                sPoolWorkQueue, sThreadFactory);</span><br><span class="line">        threadPoolExecutor.allowCoreThreadTimeOut(<span class="keyword">true</span>);</span><br><span class="line">        THREAD_POOL_EXECUTOR = threadPoolExecutor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * An &#123;<span class="doctag">@link</span> Executor&#125; that executes tasks one at a time in serial</span></span><br><span class="line"><span class="comment">     * order.  This serialization is global to a particular process.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor SERIAL_EXECUTOR = <span class="keyword">new</span> SerialExecutor();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MESSAGE_POST_RESULT = <span class="number">0x1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MESSAGE_POST_PROGRESS = <span class="number">0x2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Executor sDefaultExecutor = SERIAL_EXECUTOR;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> InternalHandler sHandler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> WorkerRunnable&lt;Params, Result&gt; mWorker;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> FutureTask&lt;Result&gt; mFuture;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> Status mStatus = Status.PENDING;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicBoolean mCancelled = <span class="keyword">new</span> AtomicBoolean();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicBoolean mTaskInvoked = <span class="keyword">new</span> AtomicBoolean();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler mHandler;</span><br><span class="line"></span><br><span class="line">  .......</span><br><span class="line">    </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>((Looper) <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">(@Nullable Handler handler)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(handler != <span class="keyword">null</span> ? handler.getLooper() : <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">(@Nullable Looper callbackLooper)</span> </span>&#123;</span><br><span class="line">        mHandler = callbackLooper == <span class="keyword">null</span> || callbackLooper == Looper.getMainLooper()</span><br><span class="line">            ? getMainHandler()</span><br><span class="line">            : <span class="keyword">new</span> Handler(callbackLooper);</span><br><span class="line"></span><br><span class="line">        mWorker = <span class="keyword">new</span> WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> Result <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                mTaskInvoked.set(<span class="keyword">true</span>);</span><br><span class="line">                Result result = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">                    <span class="comment">//noinspection unchecked</span></span><br><span class="line">                    result = doInBackground(mParams);</span><br><span class="line">                    Binder.flushPendingCommands();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Throwable tr) &#123;</span><br><span class="line">                    mCancelled.set(<span class="keyword">true</span>);</span><br><span class="line">                    <span class="keyword">throw</span> tr;</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    postResult(result);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> result;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        mFuture = <span class="keyword">new</span> FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    postResultIfNotInvoked(get());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    android.util.Log.w(LOG_TAG, e);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"An error occurred while executing doInBackground()"</span>,</span><br><span class="line">                            e.getCause());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (CancellationException e) &#123;</span><br><span class="line">                    postResultIfNotInvoked(<span class="keyword">null</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  ......</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Handler <span class="title">getMainHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (AsyncTask<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (sHandler == <span class="keyword">null</span>) &#123;</span><br><span class="line">                sHandler = <span class="keyword">new</span> InternalHandler(Looper.getMainLooper());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> sHandler;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ......    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第14-20行代码，创建了一个静态常量sThreadFactory，指向了ThreadFactory线程工厂。创建用于执行任务的线程。</p>
+<p>第22-23行代码，创建了一个静态常量sPoolWorkQueue，并且其指向了一个大小为128的BlockingQueue的的任务队列。保存在这个队列里面的每一个对象都实现了Runnable接口。BlockingQueue提供了线程安全的队列访问方式：当阻塞队列进行插入数据时，如果队列已满，线程将会阻塞等待直到队列非满；从阻塞队列取数据时，如果队列已空，线程将会阻塞等待直到队列非空。</p>
+<p>第30-36行代码，创建了一个静态变量threadPoolExecutor，其指向了一个ThreadPoolExecutor线程池。线程池中的参数如下：</p>
+<p>CORE_POOL_SIZE：核心线程池大小，具体看第6以及第10行代码，核心池中至少需要2个线程，最多4个线程，最好使用比CPU少1的数量，以避免饱和具有后台工作的CPU。</p>
+<p>MAXIMUM_POOL_SIZE：最大线程池大小，具体看第6以及第11行代码，其值为CPU数目的两倍再加1。</p>
+<p>KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,：空闲线程存活时间为30秒。</p>
+<p>在这里不再细述线程池相关的知识，具体请看《线程池详解》章节</p>
+<p>我们从上面代码及叙述可知，上面的线程工厂sThreadFactory、sPoolWorkQueue任务队列，线程池threadPoolExecutor均是静态static。也就是说，<strong>在同一个应用进程中，所有的异步任务类都是在同一个线程池中执行的。这样也可以避免在一个程序中重复创建线程池，避免资源浪费。</strong></p>
+<p>第42行代码，实例化一个执行器，该执行器按顺序每次只执行一个任务，该执行器也是一个静态常量。</p>
+<p>第44-45行代码，分别声明了MESSAGE_POST_RESULT、MESSAGE_POST_PROGRESS两个私有的静态常量，两者分别用来描述执行结果消息和执行进度消息。</p>
+<p>第47行代码将第42行示例化的执行器赋值给了sDefaultExecutor常量，该常量是静态并且使用<strong>volatile</strong>进行修饰，表明其是多线程之间可见的。</p>
+<p>第48代码声明了一个InternalHandler类型的变量sHandler，该值由124-131所示方法执行创建，而该函数又由84-86行代码中，当构造方法传入的callbackLooper为空或者其为MainLooper时执行。也就是说<strong>sHandler在构造函数传入了非MainLooper时其值为Null</strong>。当sHandler存在值时，其便指向主线程创建的Handler对象，可以向主线程消息队列发送消息。</p>
+<p>第50-51行代码声明了两个mWorker和mFuture常量，用以描述一个工作任务。它们的类型分别为WorkerRunnable&lt;Params, Result&gt;和FutureTask<result>。二者都是在构造函数中实例化，具体在后面进行描述。</result></p>
+<p>第53行代码声明了一个状态变量，用以描述当前任务的一个状态。使用<strong>volatile</strong>进行修饰，表明其是多线程之间可见的。分别有PENDING（当前任务未被执行），RUNNING(当前任务正在运行)，FINISHED(当前任务已经执行完成)，默认为PENDING。整个生命周期中每种状态只能出现一次。</p>
+<p>第55行代码实例化了一个原子变量mCancelled，用以标记任务是否被取消。</p>
+<p>第66行代码实例化了一个原子变量mTaskInvoked，用以标记任务是否被执行。</p>
+<h3><span id="internalhandler分析">InternalHandler分析</span></h3><p>InternalHandler具体代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">frameworks/base/core/java/android/os/AsyncTask$InternalHandler.java  Android <span class="number">5.0</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">InternalHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">InternalHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"unchecked"</span>, <span class="string">"RawUseOfParameterizedType"</span>&#125;)</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;</span><br><span class="line">        <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> MESSAGE_POST_RESULT:</span><br><span class="line">                <span class="comment">// There is only one result</span></span><br><span class="line">                result.mTask.finish(result.mData[<span class="number">0</span>]);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MESSAGE_POST_PROGRESS:</span><br><span class="line">                result.mTask.onProgressUpdate(result.mData);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>InternalHandler继承自Handler，拥有Handler所有功能及属性，并重写了handleMessage函数，用以处理</p>
+<p>MESSAGE_POST_PROGRESS、MESSAGE_POST_RESULT两种消息。这两种消息均是由执行异步任务的子线程发送到应用程序主线程的消息队列中的，其发送情景如下所示：</p>
+<ol>
+<li>一个异步任务执行的过程中，会不断向应用程序主线程的消息队列发送类型为MESSAGE_POST_PROGRESS的消息，用以向应用程序的主线程报告它的执行情况。</li>
+<li>一个异步任务执行执行完成时，会向应用程序主线程的消息队列发送类型为MESSAGE_POST_RESULT的消息，用以向应用程序的主线程报告它已经执行完成。</li>
+</ol>
+<p>在InternalHandler的函数handleMessage中，参数msg的成员变量obj指向了一个AsyncTaskResult对象，它的实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">frameworks/base/core/java/android/os/AsyncTask$AsyncTaskResult.java  Android <span class="number">5.0</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncTaskResult</span>&lt;<span class="title">Data</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> AsyncTask mTask;</span><br><span class="line">    <span class="keyword">final</span> Data[] mData;</span><br><span class="line"></span><br><span class="line">    AsyncTaskResult(AsyncTask task, Data... data) &#123;</span><br><span class="line">        mTask = task;</span><br><span class="line">        mData = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它的成员变量mTask用以描述一个宿主异步任务，而mData则描述这个宿主任务在执行过程中所产生的中间数据，或者是在执行完成时所产生的结果数据。</p>
+<p>由此可知，InternalHandler在接收MESSAGE_POST_PROGRESS消息时调用了AsyncTask的onProgressUpdate函数，在接收MESSAGE_POST_RESULT消息时调用了AsyncTask的finish函数。</p>
+<h3><span id="mworker和mfuture分析">mWorker和mFuture分析</span></h3><p>上面讲到，mWorker和mFuture是在构造函数中进行实例化，涉及到两者具体代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">frameworks/base/core/java/android/os/AsyncTask.java  Android <span class="number">5.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncTask</span>&lt;<span class="title">Params</span>, <span class="title">Progress</span>, <span class="title">Result</span>&gt; </span>&#123;</span><br><span class="line"> .......</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> WorkerRunnable&lt;Params, Result&gt; mWorker;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> FutureTask&lt;Result&gt; mFuture;</span><br><span class="line">  .......</span><br><span class="line">    </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>((Looper) <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">(@Nullable Handler handler)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(handler != <span class="keyword">null</span> ? handler.getLooper() : <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a new asynchronous task. This constructor must be invoked on the UI thread.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">(@Nullable Looper callbackLooper)</span> </span>&#123;</span><br><span class="line">    mHandler = callbackLooper == <span class="keyword">null</span> || callbackLooper == Looper.getMainLooper()</span><br><span class="line">        ? getMainHandler()</span><br><span class="line">        : <span class="keyword">new</span> Handler(callbackLooper);</span><br><span class="line"></span><br><span class="line">    mWorker = <span class="keyword">new</span> WorkerRunnable&lt;Params, Result&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Result <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            mTaskInvoked.set(<span class="keyword">true</span>);</span><br><span class="line">            Result result = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">                <span class="comment">//noinspection unchecked</span></span><br><span class="line">                result = doInBackground(mParams);</span><br><span class="line">                Binder.flushPendingCommands();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable tr) &#123;</span><br><span class="line">                mCancelled.set(<span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">throw</span> tr;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                postResult(result);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = <span class="keyword">new</span> FutureTask&lt;Result&gt;(mWorker) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"An error occurred while executing doInBackground()"</span>,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"> ......</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">WorkerRunnable</span>&lt;<span class="title">Params</span>, <span class="title">Result</span>&gt; <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Result</span>&gt; </span>&#123;</span><br><span class="line">        Params[] mParams;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  ......      </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">postResultIfNotInvoked</span><span class="params">(Result result)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> wasTaskInvoked = mTaskInvoked.get();</span><br><span class="line">        <span class="keyword">if</span> (!wasTaskInvoked) &#123;</span><br><span class="line">            postResult(result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ......    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Flush any Binder commands pending in the current thread to the kernel</span></span><br><span class="line"><span class="comment">     * driver.  This can be</span></span><br><span class="line"><span class="comment">     * useful to call before performing an operation that may block for a long</span></span><br><span class="line"><span class="comment">     * time, to ensure that any pending object references have been released</span></span><br><span class="line"><span class="comment">     * in order to prevent the process from holding on to objects longer than</span></span><br><span class="line"><span class="comment">     * it needs to.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">flushPendingCommands</span><span class="params">()</span></span>;</span><br><span class="line">    ......  </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> mWorker为WorkerRunnable&lt;Params, Result&gt;类型，69-71行代码描述了WorkerRunnable实现了Callable<result>接口。在上述第33-50行代码中实例化了mWorker对象，并重写了call函数，其逻辑如下：</result></p>
+<p>标记任务为被执行，第38行将当前线程优先级设置为后台线程等级（后台线程等级为10，优先级比较低获得CPU调用的机会比较少）。</p>
+<p>第39行调用AsyncTask的doInBackground函数，传入执行参数mParams（在执行 execute(Params… params) 任务方法时传入的参数），取得doInBackground函数返回结果值赋值给result变量。</p>
+<p>接下来调用Binder.flushPendingCommands，将当前线程中所有待处理的Binder命令刷新到内核驱动程序，以确保释放了所有待处理的对象引用。如果以上代码执行出现异常，则将当前任务标记为取消。</p>
+<p>无论执行是否存在异常，最终都将调用AsyncTask的postResult函数，并将处理结果传入该函数进行处理。如果前面有出现异常则结果为空。</p>
+<p>mFuture为FutureTask<result>类型，在上述第52-66行代码中实例化mFuture对象过程。实例化FutureTask的同时传入mWorker（WorkerRunnable&lt;Params, Result&gt;其实现了Callable<result>），并重写了done函数，该函数中的逻辑如下</result></result></p>
+<p>取得当前线程的任务执行结果，调用并将结果传入AsyncTask的postResultIfNotInvoked函数，在postResultIfNotInvoked函数中，如果mTaskInvoked为false（即任务未执行），则调用并将执行结果Result传入AsyncTask的postResult函数。</p>
+<p>如果FutureTask处于已完成状态，调用get()方法将导致调用线程立即返回结果或者抛出异常，抛出异常，则将null传入postResultIfNotInvoked函数;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://renferliu.github.io/2020/05/16/ThradLocal%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -187,7 +385,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-17 18:35:44" itemprop="dateModified" datetime="2020-05-17T18:35:44+08:00">2020-05-17</time>
+                <time title="修改时间：2020-05-30 00:07:35" itemprop="dateModified" datetime="2020-05-30T00:07:35+08:00">2020-05-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -596,14 +794,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
