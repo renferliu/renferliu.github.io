@@ -156,6 +156,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://renferliu.github.io/2020/09/18/%E9%85%8D%E7%BD%AECMAKE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renfer">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renfer blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/18/%E9%85%8D%E7%BD%AECMAKE/" class="post-title-link" itemprop="url">配置CMAKE</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-18 10:10:03 / 修改时间：17:17:36" itemprop="dateCreated datePublished" datetime="2020-09-18T10:10:03+08:00">2020-09-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%89%E5%8D%93/" itemprop="url" rel="index"><span itemprop="name">安卓</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3><span id="静态库">静态库</span></h3><p>静态库的代码在编译过程中已经被载入可执行程序，因此体积较大。 </p>
+<h3><span id="动态库">动态库</span></h3><p>共享库的代码是在可执行程序运行时才载入内存的，在编译过程中仅简单的引用，因此代码体积较小。</p>
+<h3><span id="区别">区别</span></h3><p>静态链接库和动态链接库的区别在于，<code>静态库</code>在程序的链接阶段被复制到了程序中，和程序运行的时候没有关系。<code>共享库</code>在链接阶段没有被复制到程序中，而是程序在运行时由系统动态加载到内存中供程序调用。使用动态库的优点是系统只需载入一次动态库，不同的程序可以得到内存中相同的动态库的副本，因此节省了很多内存。</p>
+<h2><span id="add_library">add_library</span></h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置cmake允许编译的最低版本</span></span><br><span class="line">    <span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.4</span>.<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义库名称，确定库中所包含的源文件，并设置其为静态库还是共享库.</span></span><br><span class="line">    <span class="keyword">add_library</span>( <span class="comment"># 定义库名称.</span></span><br><span class="line">                 native-lib</span><br><span class="line"></span><br><span class="line">                 <span class="comment"># 设置为共享库.</span></span><br><span class="line">                 SHARED</span><br><span class="line"></span><br><span class="line">                 <span class="comment"># 列出源文件相关路径.</span></span><br><span class="line">                 src/main/cpp/native-lib.cpp )</span><br></pre></td></tr></table></figure>
+
+<h2><span id="find_library">find_library</span></h2><p>Android NDK 提供了一套非常实用的原生 API 和库。通过在项目的 <code>CMakeLists.txt</code> 脚本文件中包含 <a href="https://developer.android.com/ndk/guides/stable_apis?hl=zh-cn" target="_blank" rel="noopener">NDK 库</a>，您可以使用其中任何 API。</p>
+<p>Android 平台上已存在预构建的 NDK 库，因此无需构建它们或将它们打包到 APK 中。由于这些 NDK 库已位于 CMake 搜索路径中，因此您甚至无需指定本地安装的 NDK 库的位置，您只需为 CMake 提供您想要使用的库的名称，并将其与您自己的原生库相关联即可。</p>
+<p>向 CMake 构建脚本添加 <a href="https://cmake.org/cmake/help/latest/command/find_library.html" target="_blank" rel="noopener"><code>find_library()</code></a> 命令以找到 NDK 库并将其路径存储为一个变量。您可以使用此变量在构建脚本的其他部分引用 NDK 库。以下示例可以找到 <a href="https://developer.android.com/ndk/guides/stable_apis?hl=zh-cn#a3" target="_blank" rel="noopener">Android 专有的日志支持库</a>，并会将其路径存储在 <code>log-lib</code> 中：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_library</span>( <span class="comment"># 定义存储NDK库位置的路径变量的名称</span></span><br><span class="line">              log-lib</span><br><span class="line"></span><br><span class="line">              <span class="comment"># 指定CMake需要定位的NDK库的名称</span></span><br><span class="line">              log )</span><br></pre></td></tr></table></figure>
+
+<h2><span id="target_link_libraries">target_link_libraries</span></h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将native库与一个或多个其他native库进行连接.</span></span><br><span class="line">   <span class="keyword">target_link_libraries</span>( <span class="comment"># 定义目标库.</span></span><br><span class="line">                          native-lib</span><br><span class="line"></span><br><span class="line">                          <span class="comment"># 链接日志库到目标库.</span></span><br><span class="line">                          <span class="variable">$&#123;log-lib&#125;</span> )</span><br></pre></td></tr></table></figure>
+
+<p>NDK 还以源代码的形式包含一些库，您将需要构建这些代码并将其关联到您的原生库。您可以使用 CMake 构建脚本中的 <code>add_library()</code> 命令将源代码编译到原生库中。如需提供本地 NDK 库的路径，您可以使用 Android Studio 自动为您定义的 <code>ANDROID_NDK</code> 路径变量。</p>
+<p>以下命令告诉 CMake 要构建 <code>android_native_app_glue.c</code>（负责管理 <a href="https://developer.android.com/reference/android/app/NativeActivity?hl=zh-cn" target="_blank" rel="noopener"><code>NativeActivity</code></a> 生命周期事件和触摸输入），并将其链接到静态库 <code>native-lib</code> 中：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>( app-glue</span><br><span class="line">                STATIC</span><br><span class="line">                <span class="variable">$&#123;ANDROID_NDK&#125;</span>/sources/android/native_app_glue/android_native_app_glue.c )</span><br><span class="line"></span><br><span class="line">   <span class="comment"># 将静态链接库合并到共享native库中.</span></span><br><span class="line">   <span class="keyword">target_link_libraries</span>( native-lib app-glue <span class="variable">$&#123;log-lib&#125;</span> )</span><br></pre></td></tr></table></figure>
+
+<h4><span id="target_link_libraries中属性private-public-interface">target_link_libraries中属性PRIVATE、PUBLIC、INTERFACE</span></h4><p>当创建动态库时，</p>
+<ul>
+<li>如果源文件(例如CPP)中包含第三方头文件，但是头文件（例如hpp）中不包含该第三方文件头，采用PRIVATE。</li>
+<li>如果源文件和头文件中都包含该第三方文件头，采用PUBLIC。</li>
+<li>如果头文件中包含该第三方文件头，但是源文件(例如CPP)中不包含，采用 <strong>INTERFACE</strong>。</li>
+</ul>
+<h2><span id="添加其他预构建库">添加其他预构建库</span></h2><p>添加预构建库的步骤与为 CMake 指定其他要构建的原生库的步骤相似。不过，由于库已构建，因此需要使用 <a href="https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" target="_blank" rel="noopener"><code>IMPORTED</code></a> 标记告诉 CMake 只想要将此库导入到项目中。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>( imported-lib</span><br><span class="line">             SHARED</span><br><span class="line">             IMPORTED )</span><br></pre></td></tr></table></figure>
+
+<p>然后，需要使用 <a href="https://cmake.org/cmake/help/latest/command/set_target_properties.html" target="_blank" rel="noopener"><code>set_target_properties()</code></a> 命令指定库的路径，具体步骤如下所示。</p>
+<p>某些库会针对特定的 CPU 架构或<a href="https://developer.android.com/ndk/guides/abis?hl=zh-cn" target="_blank" rel="noopener">应用二进制接口 (ABI)</a> 提供单独的软件包，并将其整理到单独的目录中。此方法既有助于库充分利用特定的 CPU 架构，又能让您只使用所需的库版本。要向 CMake 构建脚本添加库的多个 ABI 版本，而不必为库的每个版本编写多个命令，您可以使用 <code>ANDROID_ABI</code> 路径变量。此变量使用的是 <a href="https://developer.android.com/ndk/guides/abis?hl=zh-cn#sa" target="_blank" rel="noopener">NDK 支持的一组默认 ABI</a>，或者<a href="https://developer.android.com/studio/projects/gradle-external-native-builds?hl=zh-cn#specify-abi" target="_blank" rel="noopener">您手动配置 Gradle</a> 以使用的一组经过过滤的 ABI。例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(...)</span><br><span class="line"><span class="keyword">set_target_properties</span>( <span class="comment"># 指定目标库.</span></span><br><span class="line">                       imported-lib</span><br><span class="line"></span><br><span class="line">                       <span class="comment"># 指定想要定义的参数.</span></span><br><span class="line">                       PROPERTIES IMPORTED_LOCATION</span><br><span class="line"></span><br><span class="line">                       <span class="comment"># 提供想导入库的路径.</span></span><br><span class="line">                       imported-lib/src/<span class="variable">$&#123;ANDROID_ABI&#125;</span>/libimported-lib.so )</span><br></pre></td></tr></table></figure>
+
+<p>为了让 CMake 能够在编译时定位您的头文件，您需要使用 <code>include_directories()</code> 命令并包含相应头文件的路径：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include_directories</span>( imported-lib/<span class="keyword">include</span>/ )</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：如果您想要打包不属于构建时依赖项的预构建库（例如在添加属于 <code>imported-lib</code> 依赖项的预构建库时），则无需按以下说明操作来关联库。</p>
+<p>如需将预构建库关联到您自己的原生库，请将其添加到 CMake 构建脚本的 <code>target_link_libraries()</code> 命令中：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>( native-lib imported-lib app-glue <span class="variable">$&#123;log-lib&#125;</span> )</span><br></pre></td></tr></table></figure>
+
+<h2><span id="包含其他-cmake-项目">包含其他 CMake 项目</span></h2><p>如需将预构建库打包到 APK 中，需要使用 <code>sourceSets</code> 块<a href="https://developer.android.com/studio/projects/gradle-external-native-builds?hl=zh-cn#configure-gradle" target="_blank" rel="noopener">手动配置 Gradle</a> 以包含 <code>.so</code> 文件的路径。构建 APK 后，您可以使用 <a href="https://developer.android.com/studio/build/apk-analyzer?hl=zh-cn" target="_blank" rel="noopener">APK 分析器</a>验证 Gradle 会将哪些库打包到您的 APK 中。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将lib_src_DIR设置为目标CMake项目的路径.</span></span><br><span class="line"><span class="keyword">set</span>( lib_src_DIR ../gmath )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将lib_build_DIR设置为所需输出目录的路径.</span></span><br><span class="line"><span class="keyword">set</span>( lib_build_DIR ../gmath/outputs )</span><br><span class="line"><span class="keyword">file</span>(<span class="keyword">MAKE_DIRECTORY</span> <span class="variable">$&#123;lib_build_DIR&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将指定目录中的CMakeLists.txt文件添加为构建依赖项.</span></span><br><span class="line"><span class="keyword">add_subdirectory</span>( <span class="comment"># 指定CMakeLists.txt文件的目录.</span></span><br><span class="line">                  <span class="variable">$&#123;lib_src_DIR&#125;</span></span><br><span class="line"></span><br><span class="line">                  <span class="comment"># 指定构建输出的目录.</span></span><br><span class="line">                  <span class="variable">$&#123;lib_build_DIR&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将其他CMake构建的输出添加为预构建的静态库，并将其命名为lib_gmath.</span></span><br><span class="line"><span class="keyword">add_library</span>( lib_gmath STATIC IMPORTED )</span><br><span class="line"><span class="keyword">set_target_properties</span>( lib_gmath PROPERTIES IMPORTED_LOCATION</span><br><span class="line">                       <span class="variable">$&#123;lib_build_DIR&#125;</span>/<span class="variable">$&#123;ANDROID_ABI&#125;</span>/lib_gmath.a )</span><br><span class="line"><span class="keyword">include_directories</span>( <span class="variable">$&#123;lib_src_DIR&#125;</span>/<span class="keyword">include</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将顶级CMake构建输出链接到lib_gmath.</span></span><br><span class="line"><span class="keyword">target_link_libraries</span>( native-lib ... lib_gmath )</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://renferliu.github.io/2020/05/30/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -794,7 +900,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
